@@ -1,0 +1,593 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 14.19 (Homebrew)
+-- Dumped by pg_dump version 17.5
+
+-- Started on 2025-11-05 00:23:56 MST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+DROP DATABASE cse412project;
+--
+-- TOC entry 3844 (class 1262 OID 16475)
+-- Name: cse412project; Type: DATABASE; Schema: -; Owner: rahilshaik
+--
+
+CREATE DATABASE cse412project WITH TEMPLATE = template0 ENCODING = 'UTF8' LOCALE_PROVIDER = libc LOCALE = 'C';
+
+
+ALTER DATABASE cse412project OWNER TO rahilshaik;
+
+\connect cse412project
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET idle_in_transaction_session_timeout = 0;
+SET transaction_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+SET row_security = off;
+
+--
+-- TOC entry 4 (class 2615 OID 2200)
+-- Name: public; Type: SCHEMA; Schema: -; Owner: rahilshaik
+--
+
+-- *not* creating schema, since initdb creates it
+
+
+ALTER SCHEMA public OWNER TO rahilshaik;
+
+SET default_tablespace = '';
+
+SET default_table_access_method = heap;
+
+--
+-- TOC entry 210 (class 1259 OID 16598)
+-- Name: category; Type: TABLE; Schema: public; Owner: rahilshaik
+--
+
+CREATE TABLE public.category (
+    c_categoryid integer NOT NULL,
+    c_categoryname character varying(255) NOT NULL,
+    c_categorydescription text
+);
+
+
+ALTER TABLE public.category OWNER TO rahilshaik;
+
+--
+-- TOC entry 209 (class 1259 OID 16597)
+-- Name: category_c_categoryid_seq; Type: SEQUENCE; Schema: public; Owner: rahilshaik
+--
+
+CREATE SEQUENCE public.category_c_categoryid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.category_c_categoryid_seq OWNER TO rahilshaik;
+
+--
+-- TOC entry 3846 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: category_c_categoryid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rahilshaik
+--
+
+ALTER SEQUENCE public.category_c_categoryid_seq OWNED BY public.category.c_categoryid;
+
+
+--
+-- TOC entry 220 (class 1259 OID 16661)
+-- Name: entry; Type: TABLE; Schema: public; Owner: rahilshaik
+--
+
+CREATE TABLE public.entry (
+    e_entryid integer NOT NULL,
+    e_listid integer NOT NULL,
+    e_groceryid integer NOT NULL,
+    e_quantity integer NOT NULL
+);
+
+
+ALTER TABLE public.entry OWNER TO rahilshaik;
+
+--
+-- TOC entry 219 (class 1259 OID 16660)
+-- Name: entry_e_entryid_seq; Type: SEQUENCE; Schema: public; Owner: rahilshaik
+--
+
+CREATE SEQUENCE public.entry_e_entryid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.entry_e_entryid_seq OWNER TO rahilshaik;
+
+--
+-- TOC entry 3847 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: entry_e_entryid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rahilshaik
+--
+
+ALTER SEQUENCE public.entry_e_entryid_seq OWNED BY public.entry.e_entryid;
+
+
+--
+-- TOC entry 212 (class 1259 OID 16609)
+-- Name: groceryitem; Type: TABLE; Schema: public; Owner: rahilshaik
+--
+
+CREATE TABLE public.groceryitem (
+    g_groceryid integer NOT NULL,
+    g_groceryname character varying(255) NOT NULL,
+    g_categoryid integer[]
+);
+
+
+ALTER TABLE public.groceryitem OWNER TO rahilshaik;
+
+--
+-- TOC entry 211 (class 1259 OID 16608)
+-- Name: groceryitem_g_groceryid_seq; Type: SEQUENCE; Schema: public; Owner: rahilshaik
+--
+
+CREATE SEQUENCE public.groceryitem_g_groceryid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.groceryitem_g_groceryid_seq OWNER TO rahilshaik;
+
+--
+-- TOC entry 3848 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: groceryitem_g_groceryid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rahilshaik
+--
+
+ALTER SEQUENCE public.groceryitem_g_groceryid_seq OWNED BY public.groceryitem.g_groceryid;
+
+
+--
+-- TOC entry 214 (class 1259 OID 16618)
+-- Name: household; Type: TABLE; Schema: public; Owner: rahilshaik
+--
+
+CREATE TABLE public.household (
+    h_householdid integer NOT NULL,
+    h_ownerid integer,
+    h_householdname character varying(255) NOT NULL
+);
+
+
+ALTER TABLE public.household OWNER TO rahilshaik;
+
+--
+-- TOC entry 213 (class 1259 OID 16617)
+-- Name: household_h_householdid_seq; Type: SEQUENCE; Schema: public; Owner: rahilshaik
+--
+
+CREATE SEQUENCE public.household_h_householdid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.household_h_householdid_seq OWNER TO rahilshaik;
+
+--
+-- TOC entry 3849 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: household_h_householdid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rahilshaik
+--
+
+ALTER SEQUENCE public.household_h_householdid_seq OWNED BY public.household.h_householdid;
+
+
+--
+-- TOC entry 218 (class 1259 OID 16643)
+-- Name: lists; Type: TABLE; Schema: public; Owner: rahilshaik
+--
+
+CREATE TABLE public.lists (
+    l_listid integer NOT NULL,
+    l_householdid integer NOT NULL,
+    l_listname character varying(255),
+    l_isstocklist boolean DEFAULT false,
+    l_admin integer
+);
+
+
+ALTER TABLE public.lists OWNER TO rahilshaik;
+
+--
+-- TOC entry 217 (class 1259 OID 16642)
+-- Name: lists_l_listid_seq; Type: SEQUENCE; Schema: public; Owner: rahilshaik
+--
+
+CREATE SEQUENCE public.lists_l_listid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.lists_l_listid_seq OWNER TO rahilshaik;
+
+--
+-- TOC entry 3850 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: lists_l_listid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rahilshaik
+--
+
+ALTER SEQUENCE public.lists_l_listid_seq OWNED BY public.lists.l_listid;
+
+
+--
+-- TOC entry 216 (class 1259 OID 16625)
+-- Name: users; Type: TABLE; Schema: public; Owner: rahilshaik
+--
+
+CREATE TABLE public.users (
+    u_userid integer NOT NULL,
+    u_username character varying(255) NOT NULL,
+    u_householdid integer NOT NULL,
+    u_isadmin boolean DEFAULT false
+);
+
+
+ALTER TABLE public.users OWNER TO rahilshaik;
+
+--
+-- TOC entry 215 (class 1259 OID 16624)
+-- Name: users_u_userid_seq; Type: SEQUENCE; Schema: public; Owner: rahilshaik
+--
+
+CREATE SEQUENCE public.users_u_userid_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.users_u_userid_seq OWNER TO rahilshaik;
+
+--
+-- TOC entry 3851 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: users_u_userid_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: rahilshaik
+--
+
+ALTER SEQUENCE public.users_u_userid_seq OWNED BY public.users.u_userid;
+
+
+--
+-- TOC entry 3660 (class 2604 OID 16601)
+-- Name: category c_categoryid; Type: DEFAULT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.category ALTER COLUMN c_categoryid SET DEFAULT nextval('public.category_c_categoryid_seq'::regclass);
+
+
+--
+-- TOC entry 3667 (class 2604 OID 16664)
+-- Name: entry e_entryid; Type: DEFAULT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.entry ALTER COLUMN e_entryid SET DEFAULT nextval('public.entry_e_entryid_seq'::regclass);
+
+
+--
+-- TOC entry 3661 (class 2604 OID 16612)
+-- Name: groceryitem g_groceryid; Type: DEFAULT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.groceryitem ALTER COLUMN g_groceryid SET DEFAULT nextval('public.groceryitem_g_groceryid_seq'::regclass);
+
+
+--
+-- TOC entry 3662 (class 2604 OID 16621)
+-- Name: household h_householdid; Type: DEFAULT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.household ALTER COLUMN h_householdid SET DEFAULT nextval('public.household_h_householdid_seq'::regclass);
+
+
+--
+-- TOC entry 3665 (class 2604 OID 16646)
+-- Name: lists l_listid; Type: DEFAULT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.lists ALTER COLUMN l_listid SET DEFAULT nextval('public.lists_l_listid_seq'::regclass);
+
+
+--
+-- TOC entry 3663 (class 2604 OID 16628)
+-- Name: users u_userid; Type: DEFAULT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.users ALTER COLUMN u_userid SET DEFAULT nextval('public.users_u_userid_seq'::regclass);
+
+
+--
+-- TOC entry 3828 (class 0 OID 16598)
+-- Dependencies: 210
+-- Data for Name: category; Type: TABLE DATA; Schema: public; Owner: rahilshaik
+--
+
+COPY public.category (c_categoryid, c_categoryname, c_categorydescription) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3838 (class 0 OID 16661)
+-- Dependencies: 220
+-- Data for Name: entry; Type: TABLE DATA; Schema: public; Owner: rahilshaik
+--
+
+COPY public.entry (e_entryid, e_listid, e_groceryid, e_quantity) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3830 (class 0 OID 16609)
+-- Dependencies: 212
+-- Data for Name: groceryitem; Type: TABLE DATA; Schema: public; Owner: rahilshaik
+--
+
+COPY public.groceryitem (g_groceryid, g_groceryname, g_categoryid) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3832 (class 0 OID 16618)
+-- Dependencies: 214
+-- Data for Name: household; Type: TABLE DATA; Schema: public; Owner: rahilshaik
+--
+
+COPY public.household (h_householdid, h_ownerid, h_householdname) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3836 (class 0 OID 16643)
+-- Dependencies: 218
+-- Data for Name: lists; Type: TABLE DATA; Schema: public; Owner: rahilshaik
+--
+
+COPY public.lists (l_listid, l_householdid, l_listname, l_isstocklist, l_admin) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3834 (class 0 OID 16625)
+-- Dependencies: 216
+-- Data for Name: users; Type: TABLE DATA; Schema: public; Owner: rahilshaik
+--
+
+COPY public.users (u_userid, u_username, u_householdid, u_isadmin) FROM stdin;
+\.
+
+
+--
+-- TOC entry 3852 (class 0 OID 0)
+-- Dependencies: 209
+-- Name: category_c_categoryid_seq; Type: SEQUENCE SET; Schema: public; Owner: rahilshaik
+--
+
+SELECT pg_catalog.setval('public.category_c_categoryid_seq', 1, false);
+
+
+--
+-- TOC entry 3853 (class 0 OID 0)
+-- Dependencies: 219
+-- Name: entry_e_entryid_seq; Type: SEQUENCE SET; Schema: public; Owner: rahilshaik
+--
+
+SELECT pg_catalog.setval('public.entry_e_entryid_seq', 1, false);
+
+
+--
+-- TOC entry 3854 (class 0 OID 0)
+-- Dependencies: 211
+-- Name: groceryitem_g_groceryid_seq; Type: SEQUENCE SET; Schema: public; Owner: rahilshaik
+--
+
+SELECT pg_catalog.setval('public.groceryitem_g_groceryid_seq', 1, false);
+
+
+--
+-- TOC entry 3855 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: household_h_householdid_seq; Type: SEQUENCE SET; Schema: public; Owner: rahilshaik
+--
+
+SELECT pg_catalog.setval('public.household_h_householdid_seq', 1, false);
+
+
+--
+-- TOC entry 3856 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: lists_l_listid_seq; Type: SEQUENCE SET; Schema: public; Owner: rahilshaik
+--
+
+SELECT pg_catalog.setval('public.lists_l_listid_seq', 1, false);
+
+
+--
+-- TOC entry 3857 (class 0 OID 0)
+-- Dependencies: 215
+-- Name: users_u_userid_seq; Type: SEQUENCE SET; Schema: public; Owner: rahilshaik
+--
+
+SELECT pg_catalog.setval('public.users_u_userid_seq', 1, false);
+
+
+--
+-- TOC entry 3669 (class 2606 OID 16607)
+-- Name: category category_c_categoryname_key; Type: CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_c_categoryname_key UNIQUE (c_categoryname);
+
+
+--
+-- TOC entry 3671 (class 2606 OID 16605)
+-- Name: category category_pkey; Type: CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.category
+    ADD CONSTRAINT category_pkey PRIMARY KEY (c_categoryid);
+
+
+--
+-- TOC entry 3681 (class 2606 OID 16666)
+-- Name: entry entry_pkey; Type: CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.entry
+    ADD CONSTRAINT entry_pkey PRIMARY KEY (e_entryid);
+
+
+--
+-- TOC entry 3673 (class 2606 OID 16616)
+-- Name: groceryitem groceryitem_pkey; Type: CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.groceryitem
+    ADD CONSTRAINT groceryitem_pkey PRIMARY KEY (g_groceryid);
+
+
+--
+-- TOC entry 3675 (class 2606 OID 16623)
+-- Name: household household_pkey; Type: CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.household
+    ADD CONSTRAINT household_pkey PRIMARY KEY (h_householdid);
+
+
+--
+-- TOC entry 3679 (class 2606 OID 16649)
+-- Name: lists lists_pkey; Type: CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.lists
+    ADD CONSTRAINT lists_pkey PRIMARY KEY (l_listid);
+
+
+--
+-- TOC entry 3677 (class 2606 OID 16631)
+-- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_pkey PRIMARY KEY (u_userid);
+
+
+--
+-- TOC entry 3686 (class 2606 OID 16672)
+-- Name: entry entry_e_groceryid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.entry
+    ADD CONSTRAINT entry_e_groceryid_fkey FOREIGN KEY (e_groceryid) REFERENCES public.groceryitem(g_groceryid);
+
+
+--
+-- TOC entry 3687 (class 2606 OID 16667)
+-- Name: entry entry_e_listid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.entry
+    ADD CONSTRAINT entry_e_listid_fkey FOREIGN KEY (e_listid) REFERENCES public.lists(l_listid);
+
+
+--
+-- TOC entry 3682 (class 2606 OID 16637)
+-- Name: household h_owner; Type: FK CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.household
+    ADD CONSTRAINT h_owner FOREIGN KEY (h_ownerid) REFERENCES public.users(u_userid);
+
+
+--
+-- TOC entry 3684 (class 2606 OID 16655)
+-- Name: lists lists_l_admin_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.lists
+    ADD CONSTRAINT lists_l_admin_fkey FOREIGN KEY (l_admin) REFERENCES public.users(u_userid);
+
+
+--
+-- TOC entry 3685 (class 2606 OID 16650)
+-- Name: lists lists_l_householdid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.lists
+    ADD CONSTRAINT lists_l_householdid_fkey FOREIGN KEY (l_householdid) REFERENCES public.household(h_householdid);
+
+
+--
+-- TOC entry 3683 (class 2606 OID 16632)
+-- Name: users users_u_householdid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: rahilshaik
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT users_u_householdid_fkey FOREIGN KEY (u_householdid) REFERENCES public.household(h_householdid);
+
+
+--
+-- TOC entry 3845 (class 0 OID 0)
+-- Dependencies: 4
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: rahilshaik
+--
+
+REVOKE USAGE ON SCHEMA public FROM PUBLIC;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2025-11-05 00:23:56 MST
+
+--
+-- PostgreSQL database dump complete
+--
+
