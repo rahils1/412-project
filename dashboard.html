@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel='stylesheet' href='dashboard.css' />
+</head>
+<body>
+
+<div id="top-bar-container" class="panel">
+    <h2> Welcome [USERS NAME] to [HOUSEHOLDNAME]!</h2>
+</div>
+
+<div id="dashboard-container" class="panel">
+
+    <div id="listtable-container" class="table-container">
+
+        <div class="listtable-header">
+            <span>Click on a list to view/edit</span>
+            <button>New Table</button>
+        </div>
+
+        <table id="listTable">
+            <thead>
+                <tr>
+                    <th scope="col">List Name</th>
+                    <th scope="col">List Type</th>
+                    <th scope="col">Comment</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr>
+                    <th scope="row">Placeholder List 1</th>
+                    <td>StockList</td>
+                    <td>test comment</td>
+                </tr>
+                <tr>
+                    <th scope="row">Placeholder List 2</th>
+                    <td>StockList</td>
+                    <td>test comment</td>
+                </tr>
+                <tr>
+                    <th scope="row">Placeholder List 3</th>
+                    <td>StockList</td>
+                    <td>test comment</td>
+                </tr>
+                <tr>
+                    <th scope="row">Placeholder List 4</th>
+                    <td>StockList</td>
+                    <td>test comment</td>
+                </tr>
+                <tr>
+                    <th scope="row">Placeholder List 5</th>
+                    <td>StockList</td>
+                    <td>test comment</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="2">Total:</th>
+                    <td>5</td>
+                </tr>
+            </tfoot>
+        </table>
+
+    </div>
+
+    <div id="userTable-container" class="table-container">
+        <button>Edit Members</button>
+        <table id="userTable">
+            <thead>
+                <tr>
+                    <th scope="col">Household Members</th>
+                </tr>
+            </thead>
+            <tbody id="tbody">
+                <tr><td>User1</td></tr>
+                <tr><td>User2</td></tr>
+                <tr><td>User3</td></tr>
+                <tr><td>User4</td></tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th scope="row" colspan="1"> Total: 4</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+</div>
+
+</body>
+</html>
