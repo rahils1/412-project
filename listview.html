@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>List View</title>
+    <link rel='stylesheet' href='listview.css' />
+</head>
+<body>
+
+<div id="top-bar-container" class="panel">
+    <button onclick="location.href='dashboard.html'">
+        Home
+    </button>
+</div>
+<div id="listview-container" class="panel">
+    
+    <div id="listtable-container" class="table-container">
+        <div class="listtable-header">
+            <span>You are viewing List: [LISTNAME]</span>
+            
+        </div>
+
+        <div id="listresults" class="scroll-box">
+
+            <table id="listTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Catgegory</th>
+                        <th scope="col">Quantity</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <tr>
+                        <th scope="row">Item 1</th>
+                        <td>category</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Item 2</th>
+                        <td>category</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Item 3</th>
+                        <td>category</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Item 4</th>
+                        <td>category</td>
+                        <td>10</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Item 5</th>
+                        <td>category</td>
+                        <td>10</td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row" colspan="2">Total:</th>
+                        <td>5</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+        <button id="removeBtn">Remove Selected</button>
+    </div>
+
+    <div id="searchtable-container" class="table-container">
+
+        <div class="listtable-header">
+            <input type="text" placeholder="keyword">
+            <button>Search</button>
+        </div>
+
+        <div id="searchresults" class="scroll-box">
+
+            <table id="searchTable">
+                <thead>
+                    <tr>
+                        <th scope="col">Item Name</th>
+                        <th scope="col">Catgegory</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><th scope="row">Item 1</th><td>category</td></tr>
+                    <tr><th scope="row">Item 2</th><td>category</td></tr>
+                    <tr><th scope="row">Item 3</th><td>category</td></tr>
+                    <tr><th scope="row">Item 4</th><td>category</td></tr>
+                    <tr><th scope="row">Item 5</th><td>category</td></tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row">Total Results:</th>
+                        <td>5</td>
+                    </tr>
+                </tfoot>
+            </table>
+
+        </div>
+
+        <button id="addBtn">Add Selected</button>
+
+    </div>
+
+</div>
+
+</body>
+</html>

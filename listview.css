@@ -19,7 +19,7 @@ body {
     text-align: left;
     font-size: 15px;
 }
-#dashboard-container {
+#listview-container {
     border-top: none;
     padding: 10px;
     display: flex;
@@ -41,16 +41,13 @@ body {
     width: 80%;
     text-align: right;     
 }
-#userTable-container {
+#searchtable-container {
     width: 20%;
     text-align: right;
-}
-#userTable{
-    width: 95%;
-    margin: 10px auto;
+    
 }
 button {
-    padding: 10px 20px;   /* MATCHED LISTVIEW CSS */
+    padding: 10px 20px;
     border: 1px solid rgba(211, 211, 211, 0.548);
     margin-bottom: 7px;
     background-color: #494474;
@@ -70,11 +67,16 @@ caption {
     font-weight: bold;
 }
 table{
-    width: 99%;          
-    margin: 10px auto;   
+    overflow-y: auto;
+    width: 99%;
+    margin: 10px auto;
     font-size: 0.8rem;
     letter-spacing: 1px;
     border-collapse: collapse;
+}
+#searchTable{
+    width: 95%;
+    margin: 10px auto;
 }
 thead tr,
 tfoot tr {
@@ -86,17 +88,17 @@ td, th {
     padding: 10px;
 }
 
+
 #listTable tbody tr:hover {
     background-color: rgb(115, 113, 150);
     transform: translateY(-1px);
     cursor: pointer;
 }
-#userTable tbody tr:hover {
+#searchTable tbody tr:hover {
     background-color: rgb(115, 113, 150);
     transform: translateY(-1px);
     cursor: pointer;
 }
-
 table th:first-child,
 table td:first-child {
     text-align: left;
@@ -106,26 +108,28 @@ table td:first-child {
 thead,
 tfoot {
     background-color: rgb(52, 51, 65);
+    
 }
 tfoot th,
 tfoot td {
     text-align: right !important;
+    
 }
 
 tbody > tr:nth-of-type(even) {
     background-color: rgb(73, 72, 92);
+    
 }
 tbody > tr:nth-of-type(odd) {
     background-color: rgb(94, 90, 110);
 }
-
 .listtable-header {
-    text-align: left;
-    height: 30px;      
+    height: 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
+
 }
 .listtable-header span {
     text-align: left;
@@ -135,9 +139,48 @@ h2{
     margin-left: 5px;
 }
 
-#listresults.scroll-box,
-#userresults.scroll-box {
-    height:650px;   
+input[type="text"] {
+    width: 190px;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #9c9c9c;
+    background: rgb(120, 116, 135);
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 16px;
+}
+#searchresults.scroll-box {
+    height:575px;   
+    overflow-y: auto;
+    width: 100%;
+    padding: 0px;
+    margin-top: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(30, 28, 40, 0.4);
+}
+#addBtn {
+    width: 100%;
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 18px;
+}
+#removeBtn {
+    margin-top: 15px;
+    padding: 10px;
+    font-size: 18px;
+}
+#searchresults.scroll-box {
+    height:575px;   
+    overflow-y: auto;
+    width: 100%;
+    padding: 0px;
+    margin-top: 10px;
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(30, 28, 40, 0.4);
+}
+
+#listresults.scroll-box {
+    height:575px;
     overflow-y: auto;
     width: 100%;
     padding: 0px;
