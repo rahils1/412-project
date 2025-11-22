@@ -19,13 +19,14 @@ body {
     text-align: left;
     font-size: 15px;
 }
-#dashboard-container {
+#userview-container {
     height: 800px;
     border-top: none;
     padding: 10px;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
+    justify-content: center;
 }
 .table-container{
     border: 4px solid rgb(34, 33, 38);
@@ -34,24 +35,21 @@ body {
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    padding: 40px;
-    padding-left: 70px;
-    padding-right: 70px;
+    padding: 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
-#listtable-container {
-    width: 80%;
+#usertable-container {
+    margin-top: 50px;
+    width: 300px;
+    height: 600px;
     text-align: right;     
 }
-#userTable-container {
-    width: 20%;
-    text-align: right;
-}
-#userTable{
-    width: 95%;
-    margin: 10px auto;
-}
+
 button {
-    padding: 10px 20px;   /* MATCHED LISTVIEW CSS */
+    padding: 10px 20px;
     border: 1px solid rgba(211, 211, 211, 0.548);
     margin-bottom: 7px;
     background-color: #494474;
@@ -71,11 +69,16 @@ caption {
     font-weight: bold;
 }
 table{
-    width: 99%;          
-    margin: 10px auto;   
+    overflow-y: auto;
+    width: 99%;
+    margin: 10px auto;
     font-size: 0.8rem;
     letter-spacing: 1px;
     border-collapse: collapse;
+}
+#userTable{
+    width: 95%;
+    margin: 10px auto;
 }
 thead tr,
 tfoot tr {
@@ -87,11 +90,6 @@ td, th {
     padding: 10px;
 }
 
-#listTable tbody tr:hover {
-    background-color: rgb(115, 113, 150);
-    transform: translateY(-1px);
-    cursor: pointer;
-}
 #userTable tbody tr:hover {
     background-color: rgb(115, 113, 150);
     transform: translateY(-1px);
@@ -107,28 +105,29 @@ table td:first-child {
 thead,
 tfoot {
     background-color: rgb(52, 51, 65);
+    
 }
 tfoot th,
 tfoot td {
     text-align: right !important;
+    
 }
 
 tbody > tr:nth-of-type(even) {
     background-color: rgb(73, 72, 92);
+    
 }
 tbody > tr:nth-of-type(odd) {
     background-color: rgb(94, 90, 110);
 }
-
-.listtable-header {
-    text-align: left;
-    height: 30px;      
+.usertable-header {
+    height: 30px;
     display: flex;
     justify-content: space-between;
     align-items: center;
     width: 100%;
 }
-.listtable-header span {
+.usertable-header span {
     text-align: left;
     font-weight: bold;
 }
@@ -136,13 +135,46 @@ h2{
     margin-left: 5px;
 }
 
-#listresults.scroll-box,
+input[type="text"] {
+    width: 190px;
+    padding: 10px;
+    margin-bottom: 5px;
+    border: 1px solid #9c9c9c;
+    background: rgb(120, 116, 135);
+    color: white;
+    font-family: Georgia, serif;
+    font-size: 16px;
+}
 #userresults.scroll-box {
-    height:650px;   
+    height:575px;   
     overflow-y: auto;
     width: 100%;
     padding: 0px;
     margin-top: 10px;
     border: 1px solid rgba(255,255,255,0.3);
     background: rgba(30, 28, 40, 0.4);
+}
+#addBtn {
+    margin-top: 15px;
+    padding: 5px;
+    font-size: 16px;
+}
+#removeBtn {
+    margin-top: 15px;
+    padding: 5px;
+    font-size: 16px;
+}
+
+
+.button-row {
+    width: 100%;
+    display: flex;
+    justify-content: center;  
+    gap: 20px;
+    margin-top: auto;         
+}
+
+
+.button-row button {
+    flex: 0 1 45%;
 }

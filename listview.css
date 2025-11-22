@@ -20,6 +20,7 @@ body {
     font-size: 15px;
 }
 #listview-container {
+    height: 800px;
     border-top: none;
     padding: 10px;
     display: flex;

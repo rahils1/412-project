@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Users</title>
+    <link rel='stylesheet' href='editusers.css' />
+</head>
+<body>
+
+<div id="top-bar-container" class="panel">
+    <button onclick="location.href='dashboard.html'">
+        Home
+    </button>
+</div>
+
+<div id="userview-container" class="panel">
+    <div id="usertable-container" class="table-container">
+        <div class="usertable-header">
+            <span>Household Members:</span>
+        </div>
+
+        <div id="userresults" class="scroll-box">
+            <table id="userTable">
+                <thead>
+                    <tr>
+                        <th scope="col">UserName</th>
+                    </tr>
+                </thead>
+                <tbody id="tbody">
+                    <tr><th scope="row">User 1</th></tr>
+                    <tr><th scope="row">User 2</th></tr>
+                    <tr><th scope="row">User 3</th></tr>
+                    <tr><th scope="row">User 4</th></tr>
+                    <tr><th scope="row">User 5</th></tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <th scope="row" colspan="1">Total: 5</th>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="button-row">
+            <button id="removeBtn">Remove Selected</button>
+            <button id="addBtn">Add New</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>
