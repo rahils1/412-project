@@ -1,5 +1,3 @@
-const BASE_URL = "http://127.0.0.1:5000";
-
 const tableSelect = document.getElementById("tables");
 const thead = document.getElementById("thead");
 const tbody = document.getElementById("tbody");
@@ -8,7 +6,7 @@ tableSelect.addEventListener("change", async () => {
     const tableName = tableSelect.value;
     if (!tableName) return;
 
-    const res = await fetch(`${BASE_URL}/table/${tableName}`);
+    const res = await fetch(`http://127.0.0.1:5000/table/${tableName}`);
     const data = await res.json();
 
     if (!Array.isArray(data) || data.length === 0) {

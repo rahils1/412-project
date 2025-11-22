@@ -3,22 +3,25 @@ body {
     color: white;
     font-family: Georgia, serif;
 }
-.panel{
+
+.panel {
     border: 1px solid rgb(127, 127, 127);
     background: rgb(34, 33, 38);
     margin-right: 5px;
     margin-left: 5px;
-    width: 98%; 
+    width: 98%;
     padding-left: 10px;
     padding-right: 10px;
 }
+
 #top-bar-container {
-    padding-top:10px;
+    padding-top: 10px;
     border-bottom: none;
     height: 50px;
     text-align: left;
     font-size: 15px;
 }
+
 #listview-container {
     height: 800px;
     border-top: none;
@@ -27,7 +30,8 @@ body {
     flex-direction: row;
     align-items: flex-start;
 }
-.table-container{
+
+.table-container {
     border: 4px solid rgb(34, 33, 38);
     background: rgba(72, 69, 86, 0.445);
     height: 700px;
@@ -38,15 +42,18 @@ body {
     padding-left: 70px;
     padding-right: 70px;
 }
+
 #listtable-container {
     width: 80%;
-    text-align: right;     
+    text-align: right;
 }
+
 #searchtable-container {
     width: 20%;
     text-align: right;
-    
+
 }
+
 button {
     padding: 10px 20px;
     border: 1px solid rgba(211, 211, 211, 0.548);
@@ -57,17 +64,20 @@ button {
     font-family: Georgia, serif;
     font-size: 16px;
 }
+
 button:hover {
     background-color: #7777a0;
     transform: translateY(-1px);
 }
+
 caption {
     caption-side: top;
     text-align: left;
     padding: 10px;
     font-weight: bold;
 }
-table{
+
+table {
     overflow-y: auto;
     width: 99%;
     margin: 10px auto;
@@ -75,17 +85,21 @@ table{
     letter-spacing: 1px;
     border-collapse: collapse;
 }
-#searchTable{
+
+#searchTable {
     width: 95%;
     margin: 10px auto;
 }
+
 thead tr,
 tfoot tr {
     background-color: rgb(52, 51, 65);
     border: 2px solid rgba(255, 255, 255, 0.361);
 }
-td, th {
-    border: 1px solid rgba(255,255,255,0.25);
+
+td,
+th {
+    border: 1px solid rgba(255, 255, 255, 0.25);
     padding: 10px;
 }
 
@@ -95,11 +109,13 @@ td, th {
     transform: translateY(-1px);
     cursor: pointer;
 }
+
 #searchTable tbody tr:hover {
     background-color: rgb(115, 113, 150);
     transform: translateY(-1px);
     cursor: pointer;
 }
+
 table th:first-child,
 table td:first-child {
     text-align: left;
@@ -109,21 +125,24 @@ table td:first-child {
 thead,
 tfoot {
     background-color: rgb(52, 51, 65);
-    
+
 }
+
 tfoot th,
 tfoot td {
     text-align: right !important;
-    
+
 }
 
-tbody > tr:nth-of-type(even) {
+tbody>tr:nth-of-type(even) {
     background-color: rgb(73, 72, 92);
-    
+
 }
-tbody > tr:nth-of-type(odd) {
+
+tbody>tr:nth-of-type(odd) {
     background-color: rgb(94, 90, 110);
 }
+
 .listtable-header {
     height: 30px;
     display: flex;
@@ -132,11 +151,13 @@ tbody > tr:nth-of-type(odd) {
     width: 100%;
 
 }
+
 .listtable-header span {
     text-align: left;
     font-weight: bold;
 }
-h2{
+
+h2 {
     margin-left: 5px;
 }
 
@@ -150,42 +171,46 @@ input[type="text"] {
     font-family: Georgia, serif;
     font-size: 16px;
 }
+
 #searchresults.scroll-box {
-    height:575px;   
+    height: 575px;
     overflow-y: auto;
     width: 100%;
     padding: 0px;
     margin-top: 10px;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     background: rgba(30, 28, 40, 0.4);
 }
+
 #addBtn {
     width: 100%;
     margin-top: 15px;
     padding: 10px;
     font-size: 18px;
 }
+
 #removeBtn {
     margin-top: 15px;
     padding: 10px;
     font-size: 18px;
 }
+
 #searchresults.scroll-box {
-    height:575px;   
+    height: 575px;
     overflow-y: auto;
     width: 100%;
     padding: 0px;
     margin-top: 10px;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     background: rgba(30, 28, 40, 0.4);
 }
 
 #listresults.scroll-box {
-    height:575px;
+    height: 575px;
     overflow-y: auto;
     width: 100%;
     padding: 0px;
     margin-top: 10px;
-    border: 1px solid rgba(255,255,255,0.3);
+    border: 1px solid rgba(255, 255, 255, 0.3);
     background: rgba(30, 28, 40, 0.4);
 }

@@ -11,7 +11,7 @@
             align-items: center;
             background-color: #15141d;
             color: white;
-            font-family: Georgia, serif;
+            font-family: Georgia, sans-serif;
         }
 
         .login-container {
@@ -21,15 +21,19 @@
 
         }
 
-        input[type="text"] {
+        input{
             width: 200px;
             padding: 10px;
 
             border: 1px solid #9c9c9c;
             background: rgb(120, 116, 135);
             color: white;
-            font-family: Georgia, serif;
+            font-family: Georgia, sans-serif;
             font-size: 16px;
+        }
+
+        input::placeholder {
+            color:  white;
         }
 
         button {
@@ -39,7 +43,7 @@
             background-color: #312f40;
             color: white;
             cursor: pointer;
-            font-family: Georgia, serif;
+            font-family: Georgia, sans-serif;
             font-size: 16px;
         }
 
@@ -51,17 +55,17 @@
 </head>
 <body>
 
-<div class="login-container">
-    <h2>Login Here:</h2>
-    <input type="text" placeholder="Enter Username">
-    <br>
-    <br>
-    <input type="text" placeholder="Enter Password">
-    <br>
-    <button onclick="location.href='dashboard.html'">
-        Enter
-    </button>
-</div>
-
+    <div class="login-container">
+        <h2>Login Here:</h2>
+        <input type="text" id="username_input" placeholder="Enter Username">
+        <br>
+        <br>
+        <input type="password" id="password_input" placeholder="Enter Password">
+        <br>
+        <button onclick="logIn()">
+            Enter
+        </button>
+    </div>
+    <script src="login.js"></script>
 </body>
 </html>
