@@ -51,21 +51,28 @@
             background-color: #7777a0;
             transform: translateY(-1px);
         }
+        #error_text {
+            color: #ff0044;
+            margin-top: 15px;
+            font-size: 14px;
+            font-family: Georgia, sans-serif;
+        }
     </style>
 </head>
 <body>
 
-    <div class="login-container">
+    <div class="login-container" id="login_container">
         <h2>Login Here:</h2>
         <input type="text" id="username_input" placeholder="Enter Username">
         <br>
         <br>
         <input type="password" id="password_input" placeholder="Enter Password">
         <br>
+        <div id="error_text"></div>
         <button onclick="logIn()">
             Enter
         </button>
     </div>
-    <script src="login.js"></script>
+    <script src="../static/js/login.js"></script>
 </body>
 </html>
