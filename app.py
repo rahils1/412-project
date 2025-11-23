@@ -1,7 +1,7 @@
 import secrets
 from typing import Dict
 
-from flask import Flask, jsonify, redirect, render_template, request, session
+from flask import Flask, jsonify, render_template, request, session
 
 # from flask_cors import CORS
 from psycopg import Connection, Cursor, sql
