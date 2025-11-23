@@ -87,6 +87,24 @@ def login_page():
 @app.get("/dashboard")
 def dashboard_page():
     return render_template("dashboard.html")
+    
+@app.get("/dashboard_load_data")
+def dashboard_load_data():
+    conn: Connection[TupleRow] = get_conn()
+    cur: Cursor[TupleRow] = conn.cursor()
+
+    current_user = session.get("user")
+    query: str = "SELECT l_listname, l_isstocklist FROM lists where l_householdid = %s"
+    cur.execute(query, (current_user["householdid"],))
+    
+    lists_in_household : list[TupleRow] = cur.fetchall()
+
+    res = []
+    for element in lists_in_household:
+        res.append({"listname": element[0], "isstocklist": element[1]})
+
+    return jsonify(res)
+
 
 
 @app.get("/logout")
