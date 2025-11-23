@@ -88,24 +88,39 @@ def login_page():
 def dashboard_page():
     return render_template("dashboard.html")
     
-@app.get("/dashboard_load_data")
-def dashboard_load_data():
+@app.get("/listTable_load_data")
+def listTable_load_data():
     conn: Connection[TupleRow] = get_conn()
     cur: Cursor[TupleRow] = conn.cursor()
 
     current_user = session.get("user")
-    query: str = "SELECT l_listname, l_isstocklist FROM lists where l_householdid = %s"
+    query: str = "SELECT l_listname, l_isstocklist FROM lists WHERE l_householdid = %s"
     cur.execute(query, (current_user["householdid"],))
     
     lists_in_household : list[TupleRow] = cur.fetchall()
 
     res = []
-    for element in lists_in_household:
-        res.append({"listname": element[0], "isstocklist": element[1]})
+    for list_info in lists_in_household:
+        res.append({"listname": list_info[0], "isstocklist": list_info[1]})
 
     return jsonify(res)
 
+@app.get("/userTable_load_data")
+def userTable_load_data():
+    conn: Connection[TupleRow] = get_conn()
+    cur: Cursor[TupleRow] = conn.cursor()
 
+    current_user = session.get("user")
+    query: str = "SELECT u_username FROM users WHERE u_householdid = %s"
+    cur.execute(query, (current_user["householdid"],))
+    
+    users_in_household : list[TupleRow] = cur.fetchall()
+
+    res = []
+    for user in users_in_household:
+        res.append({"username": user[0]})
+
+    return jsonify(res)
 
 @app.get("/logout")
 def logout():
