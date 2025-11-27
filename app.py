@@ -3,7 +3,7 @@ from typing import Dict
 
 from flask import Flask, jsonify, render_template, request, session
 
-# from flask_cors import CORS
+from flask_cors import CORS
 from psycopg import Connection, Cursor, sql
 from psycopg.rows import TupleRow
 
@@ -11,9 +11,10 @@ from db import get_conn
 from User import User
 
 app: Flask = Flask(__name__)
-app.secret_key = secrets.token_hex(32)
+# Temp until we set everything up, needed for easy testing the app
+app.secret_key = "your_fixed_secret_key_12345"
 
-# CORS(app, supports_credentials=True, origins=["null"])
+CORS(app, supports_credentials=True)
 
 currUser: User | None = None
 
@@ -34,7 +35,7 @@ def login():
     password: str = req.get("password")
     conn: Connection[TupleRow] = get_conn()
     cur: Cursor[TupleRow] = conn.cursor()
-    query: str = "SELECT * from Users WHERE u_username = %s and u_password = %s"
+    query: str = "SELECT * from users WHERE u_username = %s and u_password = %s"
     cur.execute(query, (uname, password))
     user_info: TupleRow | None = cur.fetchone()
     if user_info:
@@ -87,6 +88,209 @@ def login_page():
 @app.get("/dashboard")
 def dashboard_page():
     return render_template("dashboard.html")
+
+
+@app.get("/newlist")
+def newlist_page():
+    return render_template("newlist.html")
+
+
+@app.get("/listview")
+def listview_page():
+    return render_template("listview.html")
+
+#R
+@app.get("/getListEntries/<int:list_id>")
+def get_list_entries(list_id):
+    try:
+        conn: Connection[TupleRow] = get_conn()
+        cur: Cursor[TupleRow] = conn.cursor()
+        # getting list name
+        cur.execute("SELECT l_listname FROM lists WHERE l_listid = %s", (list_id,))
+        list_info = cur.fetchone()
+        if not list_info:
+            return jsonify({"error": "List not found"}), 404
+        list_name = list_info[0]
+        # getting entries (grocery and catgory names)
+        query = """
+            SELECT e.e_entryid, g.g_groceryname, c.c_categoryname, e.e_quantity
+            FROM entry e
+            JOIN groceryitem g ON e.e_groceryid = g.g_groceryid
+            LEFT JOIN category c ON c.c_categoryid = ANY(g.g_categoryid)
+            WHERE e.e_listid = %s
+        """
+        cur.execute(query, (list_id,))
+        entries = cur.fetchall()
+        cur.close()
+        conn.close()
+        result = {
+            "listName": list_name,
+            "entries": [
+                {
+                    "entryId": entry[0],
+                    "groceryName": entry[1],
+                    "category": entry[2] if entry[2] else "Uncategorized",
+                    "quantity": entry[3]
+                }
+                for entry in entries
+            ]
+        }
+        return jsonify(result), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+    
+#R
+@app.delete("/deleteEntry/<int:entry_id>")
+def delete_entry(entry_id):
+    try:
+        conn: Connection[TupleRow] = get_conn()
+        cur: Cursor[TupleRow] = conn.cursor()
+        cur.execute("DELETE FROM entry WHERE e_entryid = %s", (entry_id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return jsonify({"success": "Entry deleted"}), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.get("/getCategories")
+def get_categories():
+    try:
+        conn: Connection[TupleRow] = get_conn()
+        cur: Cursor[TupleRow] = conn.cursor()
+        query: str = "SELECT c_categoryid, c_categoryname FROM category"
+        cur.execute(query)
+        categories = cur.fetchall()
+        cur.close()
+        conn.close()
+        
+        result = [
+            {"c_categoryid": cat[0], "c_categoryname": cat[1]}
+            for cat in categories
+        ]
+        return jsonify(result), 200
+    
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.post("/addEntry")
+def add_entry():
+    #If you get "duplicate key value violates unique constraint 'groceryitem_pkey'" error
+    #run SELECT setval('groceryitem_g_groceryid_seq', (SELECT MAX(g_groceryid) FROM groceryitem) + 1);
+    current_user = session.get("user")
+    if not current_user:
+        return jsonify({"error": "User not logged in"}), 401
+
+    req = request.get_json()
+    list_id: int = req.get("listId")
+    grocery_name: str = req.get("groceryName")
+    quantity: int = req.get("quantity")
+    category_id: int = req.get("categoryId")
+
+    if list_id is None or not grocery_name or quantity is None:
+        return jsonify({"error": "Missing required fields"}), 400
+
+    try:
+        conn: Connection[TupleRow] = get_conn()
+        cur: Cursor[TupleRow] = conn.cursor()
+        
+        #check if grocery item exists, if not create it
+        query_check: str = "SELECT g_groceryid FROM groceryitem WHERE LOWER(g_groceryname) = LOWER(%s)"
+        cur.execute(query_check, (grocery_name,))
+        grocery_result = cur.fetchone()
+        
+        if grocery_result:
+            grocery_id = grocery_result[0]
+            
+            # If a category is provided and the item doesn't have it, add it
+            if category_id:
+                query_check_category: str = """
+                    SELECT g_categoryid FROM groceryitem WHERE g_groceryid = %s
+                """
+                cur.execute(query_check_category, (grocery_id,))
+                category_result = cur.fetchone()
+                
+                if category_result and category_result[0]:
+                    # Update categories add the new one if not already there
+                    query_update_category: str = """
+                        UPDATE groceryitem 
+                        SET g_categoryid = array_append(g_categoryid, %s)
+                        WHERE g_groceryid = %s AND NOT %s = ANY(g_categoryid)
+                        RETURNING g_groceryid
+                    """
+                    cur.execute(query_update_category, (category_id, grocery_id, category_id))
+                else:
+                    # Set categories if empty
+                    query_update_category: str = """
+                        UPDATE groceryitem 
+                        SET g_categoryid = ARRAY[%s]
+                        WHERE g_groceryid = %s
+                    """
+                    cur.execute(query_update_category, (category_id, grocery_id))
+        else:
+            # Create new grocery item only insert if it doesn't exist
+            try:
+                if category_id:
+                    query_insert_grocery: str = """
+                        INSERT INTO groceryitem (g_groceryname, g_categoryid)
+                        VALUES (%s, ARRAY[%s])
+                        RETURNING g_groceryid
+                    """
+                    cur.execute(query_insert_grocery, (grocery_name, category_id))
+                else:
+                    query_insert_grocery: str = """
+                        INSERT INTO groceryitem (g_groceryname, g_categoryid)
+                        VALUES (%s, ARRAY[]::int[])
+                        RETURNING g_groceryid
+                    """
+                    cur.execute(query_insert_grocery, (grocery_name,))
+                
+                grocery_id = cur.fetchone()[0]
+            except Exception as e:
+                print(f"Insert failed: {str(e)}")
+                # If insert failed maybe already created by another
+                cur.execute("SELECT g_groceryid FROM groceryitem WHERE LOWER(g_groceryname) = LOWER(%s)", (grocery_name,))
+                result = cur.fetchone()
+                if result:
+                    grocery_id = result[0]
+                else:
+                    raise
+        
+        # Check if item already in this list
+        query_check_entry: str = """
+            SELECT e_entryid FROM entry 
+            WHERE e_listid = %s AND e_groceryid = %s
+        """
+        cur.execute(query_check_entry, (list_id, grocery_id))
+        entry_exists = cur.fetchone()
+        
+        if entry_exists:
+            return jsonify({"error": "This item already exists in this list"}), 400
+        
+        # Insert the entry
+        query_insert_entry: str = """
+            INSERT INTO entry (e_listid, e_groceryid, e_quantity)
+            VALUES (%s, %s, %s)
+            RETURNING e_entryid
+        """
+        cur.execute(query_insert_entry, (list_id, grocery_id, quantity))
+        entry_id = cur.fetchone()[0]
+        
+        conn.commit()
+        cur.close()
+        conn.close()
+        
+        return jsonify({"success": "Entry added", "entryId": entry_id}), 200
+    
+    except Exception as e:
+        print(f"Error in add_entry: {str(e)}")
+        return jsonify({"error": str(e)}), 500
+
+
     
 @app.get("/listTable_load_data")
 def listTable_load_data():
@@ -94,14 +298,14 @@ def listTable_load_data():
     cur: Cursor[TupleRow] = conn.cursor()
 
     current_user = session.get("user")
-    query: str = "SELECT l_listname, l_isstocklist FROM lists WHERE l_householdid = %s"
+    query: str = "SELECT l_listid, l_listname, l_isstocklist FROM lists WHERE l_householdid = %s"
     cur.execute(query, (current_user["householdid"],))
     
     lists_in_household : list[TupleRow] = cur.fetchall()
 
     res = []
     for list_info in lists_in_household:
-        res.append({"listname": list_info[0], "isstocklist": list_info[1]})
+        res.append({"listid": list_info[0], "listname": list_info[1], "isstocklist": list_info[2]})
 
     return jsonify(res)
 
@@ -126,6 +330,46 @@ def userTable_load_data():
 def logout():
     session.clear()
     return jsonify({"Success": "Successfully Logged Out"}), 200
+
+
+#Rad
+@app.post("/createList")
+def create_list():
+    current_user = session.get("user")
+    if not current_user:
+        return jsonify({"error": "User not logged in"}), 401
+
+    req = request.get_json()
+    list_name: str = req.get("listName")
+    comment: str = req.get("comment")
+    is_stock_list: bool = req.get("isStockList")
+
+    if not list_name:
+        return jsonify({"error": "List name is required"}), 400
+
+    try:
+        conn: Connection[TupleRow] = get_conn()
+        cur: Cursor[TupleRow] = conn.cursor()
+        query: str = """
+            INSERT INTO lists (l_householdid, l_listname, l_comment, l_isstocklist, l_admin)
+            VALUES (%s, %s, %s, %s, %s)
+            RETURNING l_listid
+        """
+        cur.execute(query, (
+            current_user["householdid"],
+            list_name,
+            comment,
+            is_stock_list,
+            current_user["uid"]
+        ))
+        new_list_id = cur.fetchone()[0]
+        conn.commit()
+        cur.close()
+        conn.close()
+        return jsonify({"success": "List created", "listId": new_list_id}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
 
 
 if __name__ == "__main__":

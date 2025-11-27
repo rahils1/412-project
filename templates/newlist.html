@@ -98,12 +98,7 @@
         }
     </style>
 
-    <script>
-        function toggleSwitch(div) {
-            div.classList.toggle("active");
-            div.dataset.state = div.classList.contains("active") ? "yes" : "no";
-        }
-    </script>
+    <script src="../static/js/newlist.js"></script>
 </head>
 <body>
 
@@ -119,10 +114,10 @@
     
     <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
         <button id = "cancelBtn" 
-                onclick="location.href='dashboard.html'">
+                onclick="location.href='http://127.0.0.1:5000/dashboard'">
             Cancel
         </button>
-        <button>Create List</button> 
+        <button type="button" onclick="createList()">Create List</button> 
     </div>
 
 </div>

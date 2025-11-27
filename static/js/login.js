@@ -5,6 +5,7 @@ async function logIn() {
 
     let result = await fetch("http://127.0.0.1:5000/login", {
         method: "POST",
+        credentials: 'include',
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
             username: username.value,
@@ -14,7 +15,7 @@ async function logIn() {
     if (result.status === 200) {
         let data = await result.json();
         console.log(data);
-        window.location.href = "/dashboard";
+        window.location.href = "http://127.0.0.1:5000/dashboard";
     } else {
         error_text.textContent = "Login failed: Invalid username or password";
     }

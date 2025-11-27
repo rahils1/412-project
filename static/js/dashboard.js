@@ -26,9 +26,13 @@ async function createDashboard() {
 
     var tbody = document.getElementById("listTable_tbody");
     for (const element of data) {
-        tbody.innerHTML += `<tr>
-                                <td>${element.listname}</td> <td>${element.isstocklist}</td>
-                            </tr>`;
+        const row = document.createElement("tr");
+        row.innerHTML = `<td>${element.listname}</td><td>${element.isstocklist}</td>`;
+        row.style.cursor = "pointer";
+        row.onclick = () => {
+            window.location.href = `http://127.0.0.1:5000/listview?id=${element.listid}`;
+        };
+        tbody.appendChild(row);
     }
 
     // TODO: Only show the Edit members button IF the user is an admin.
