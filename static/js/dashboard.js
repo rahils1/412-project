@@ -1,5 +1,16 @@
 document.addEventListener("DOMContentLoaded", createDashboard);
 
+async function checkIfAdmin() {
+     let res = await fetch("http://127.0.0.1:5000/isAdmin", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+    });
+
+    data = await res.json();
+
+    return data
+}
+
 async function createDashboard() {
     // Set the top welcome text
     let welcome_text = document.getElementById("welcome_text");
@@ -35,7 +46,15 @@ async function createDashboard() {
         tbody.appendChild(row);
     }
 
-    // TODO: Only show the Edit members button IF the user is an admin.
+    // If the user is not admin, disable the edit button.
+    const admin_status = await checkIfAdmin();
+    console.log(admin_status);
+    if (!admin_status["is_admin"]) {
+        const editBtn = document.getElementById("editMembersButton")
+        editBtn.remove();
+    }
+
+
     // Populate the user table based on user's household id 
     res = await fetch("http://127.0.0.1:5000/userTable_load_data", {
         method: "GET",
@@ -54,6 +73,10 @@ async function createDashboard() {
     // Once the user table is populated we can display the number of members
     const userTableHeader = document.getElementById("userTable_header")
     userTableHeader.innerHTML += calculateNumRows("userTable_tbody")
+}
+
+function poop() {
+    console.log("poop");
 }
 
 // Used to calculate the total # of rows in a tbody

@@ -326,6 +326,20 @@ def userTable_load_data():
 
     return jsonify(res)
 
+@app.get("/isAdmin")
+def isAdmin():
+    conn: Connection[TupleRow] = get_conn()
+    cur: Cursor[TupleRow] = conn.cursor()
+
+    current_user = session.get("user")
+    query = "SELECT u_isadmin from users where u_userid = %s"
+    cur.execute(query, (current_user["uid"],))
+
+    query_res = cur.fetchone()
+    is_admin = query_res[0] 
+    return jsonify({"is_admin": is_admin})
+
+
 @app.get("/logout")
 def logout():
     session.clear()
