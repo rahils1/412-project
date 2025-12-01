@@ -24,6 +24,6 @@ async function createList() {
     if (response.status === 200) {
         window.location.href = "http://127.0.0.1:5000/dashboard";
     } else {
-        alert("Failed to create list");
+        alert("Failed to create list" + response.status);
     }
 }

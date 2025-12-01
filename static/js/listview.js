@@ -1,25 +1,21 @@
 let currentListId = null;
 
 document.addEventListener("DOMContentLoaded", () => {
-    console.log("Current URL:", window.location.href);
     const params = new URLSearchParams(window.location.search);
     const idParam = params.get("id");
-    console.log("ID parameter from URL:", idParam);
     currentListId = parseInt(idParam);
-    console.log("Current List ID (parsed):", currentListId);
-    
+
     if (currentListId === null || isNaN(currentListId)) {
         alert("No list selected");
         window.location.href = "http://127.0.0.1:5000/dashboard";
         return;
     }
-    
+
     loadListDetails();
     loadCategories();
 });
 
 async function loadListDetails() {
-    // Fetch list entries from backend
     const response = await fetch(`http://127.0.0.1:5000/getListEntries/${currentListId}`, {
         method: "GET",
         credentials: 'include',
@@ -28,12 +24,8 @@ async function loadListDetails() {
 
     if (response.status === 200) {
         const data = await response.json();
-        
-        // Update title
         document.getElementById("list_title").textContent = data.listName;
         document.getElementById("list_info").textContent = `Items in "${data.listName}"`;
-
-        // Populate table
         const tbody = document.getElementById("listTable_tbody");
         tbody.innerHTML = "";
         data.entries.forEach(entry => {
@@ -50,7 +42,6 @@ async function loadListDetails() {
     }
 }
 
-// Remove entry from list
 async function removeEntry(entryId) {
     const response = await fetch(`http://127.0.0.1:5000/deleteEntry/${entryId}`, {
         method: "DELETE",
@@ -76,7 +67,7 @@ async function loadCategories() {
         if (response.status === 200) {
             const categories = await response.json();
             const categorySelect = document.getElementById("categorySelect");
-            
+
             categories.forEach(category => {
                 const option = document.createElement("option");
                 option.value = category.c_categoryid;
@@ -110,7 +101,6 @@ async function addItemToList() {
         return;
     }
 
-    // Default quantity to 1 if empty
     if (!quantity || quantity === "") {
         quantity = "1";
     }
@@ -129,15 +119,14 @@ async function addItemToList() {
         });
 
         const data = await response.json();
-        
+
         if (response.status === 200) {
             closeAddItem();
             loadListDetails();
         } else {
-            alert("Error: " + (data.error || "Failed to add item"));
+            alert("Error: Failed to add item");
         }
     } catch (err) {
-        console.log("Error adding item:", err);
         alert("Error adding item to list");
     }
 }

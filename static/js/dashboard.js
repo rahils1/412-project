@@ -1,33 +1,28 @@
 document.addEventListener("DOMContentLoaded", createDashboard);
 
 async function checkIfAdmin() {
-     let res = await fetch("http://127.0.0.1:5000/isAdmin", {
+    let res = await fetch("http://127.0.0.1:5000/currUser", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     });
 
     data = await res.json();
-
-    return data
+    return data.user.isadmin;
 }
 
 async function createDashboard() {
-    // Set the top welcome text
     let welcome_text = document.getElementById("welcome_text");
     let result = await fetch("http://127.0.0.1:5000/currUser", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
     });
 
-    if (result.status !== 200) {
-        return;
-    }
+    if (result.status !== 200) { return; }
 
     let data = await result.json();
     let user = data.user;
     welcome_text.textContent = `Welcome ${user.username} to Household ${user.householdid}!`;
 
-    // Populating the table body based on user's household id
     let res = await fetch("http://127.0.0.1:5000/listTable_load_data", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -46,16 +41,12 @@ async function createDashboard() {
         tbody.appendChild(row);
     }
 
-    // If the user is not admin, disable the edit button.
     const admin_status = await checkIfAdmin();
-    console.log(admin_status);
-    if (!admin_status["is_admin"]) {
-        const editBtn = document.getElementById("editMembersButton")
+    if (!admin_status) {
+        const editBtn = document.getElementById("editMembersButton");
         editBtn.remove();
     }
 
-
-    // Populate the user table based on user's household id 
     res = await fetch("http://127.0.0.1:5000/userTable_load_data", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
@@ -70,19 +61,13 @@ async function createDashboard() {
                             </tr>`;
     }
 
-    // Once the user table is populated we can display the number of members
-    const userTableHeader = document.getElementById("userTable_header")
-    userTableHeader.innerHTML += calculateNumRows("userTable_tbody")
+    const userTableHeader = document.getElementById("userTable_header");
+    userTableHeader.innerHTML += calculateNumRows("userTable_tbody");
 }
 
-function poop() {
-    console.log("poop");
-}
-
-// Used to calculate the total # of rows in a tbody
 function calculateNumRows(tbodyIdName) {
     const table = document.getElementById(tbodyIdName);
-    return table.rows.length; 
+    return table.rows.length;
 }
 
 async function logout() {

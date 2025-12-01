@@ -14,7 +14,6 @@ async function logIn() {
     });
     if (result.status === 200) {
         let data = await result.json();
-        console.log(data);
         window.location.href = "http://127.0.0.1:5000/dashboard";
     } else {
         error_text.textContent = "Login failed: Invalid username or password";
