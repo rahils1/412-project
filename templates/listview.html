@@ -87,12 +87,15 @@
             <button onclick="openAddItem()">
                 Add Item
             </button>
+            <button onclick="openDeleteList()">
+                Delete List
+            </button>
         </div>
 
         <div id="listresults" class="scroll-box">
 
             <table id="listTable">
-                <thead> 
+                <thead>
                     <th>Item Name</th>
                     <th>Category</th>
                     <th>Quantity</th>
@@ -111,15 +114,25 @@
     <div class="modal-content">
         <span class="close" onclick="closeAddItem()">&times;</span>
         <h2>Add Item to List</h2>
-        
+
         <input type="text" id="groceryName" placeholder="Enter grocery name">
         <input type="number" id="quantity" placeholder="Enter quantity" min="1" value="">
         <select id="categorySelect">
             <option value="">Select Category</option>
         </select>
-        
+
         <button onclick="addItemToList()">Add Item</button>
         <button onclick="closeAddItem()" style="background-color: #494474;">Cancel</button>
+    </div>
+</div>
+
+<div id="deleteList" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeDeleteList()">&times;</span>
+        <h2>Are you sure you want to delete this list?</h2>
+
+        <button onclick="deleteList()">yes, delete</button>
+        <button onclick="closeDeleteList()" style="background-color: #494474;">Cancel</button>
     </div>
 </div>
 

@@ -77,7 +77,7 @@ def get_list_entries(list_id):
         cur.execute("SELECT l_listname FROM lists WHERE l_listid = %s", (list_id,))
         list_info: TupleRow | None = cur.fetchone()
         if not list_info:
-            return jsonify({"error": "List not found"}), 404
+            return jsonify({"error": "List not found"}), 400
         list_name = list_info[0]
         query: str = """
         SELECT e.e_entryid, g.g_groceryname, c.c_categoryname, e.e_quantity
@@ -151,7 +151,7 @@ def add_entry():
     # run SELECT setval('groceryitem_g_groceryid_seq', (SELECT MAX(g_groceryid) FROM groceryitem) + 1);
     current_user = session.get("user")
     if not current_user:
-        return jsonify({"error": "User not logged in"}), 401
+        return jsonify({"error": "User not logged in"}), 400
 
     req = request.get_json()
     list_id: int = req.get("listId")
@@ -309,7 +309,7 @@ def userTable_load_data():
 def create_list():
     current_user = session.get("user")
     if not current_user:
-        return jsonify({"error": "User not logged in"}), 401
+        return jsonify({"error": "User not logged in"}), 400
 
     req = request.get_json()
     list_name: str = req.get("listName")
@@ -345,6 +345,59 @@ def create_list():
         cur.close()
         conn.close()
         return jsonify({"success": "List created", "listId": new_list_id}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.delete("/deleteList/<int:list_id>")
+def delete_list(list_id):
+    try:
+        conn: Connection[TupleRow] = get_conn()
+        cur: Cursor[TupleRow] = conn.cursor()
+        cur.execute("DELETE FROM lists WHERE l_listid = %s", (list_id,))
+        conn.commit()
+        cur.close()
+        conn.close()
+        return jsonify({"success": "List deleted"}), 200
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
+@app.get("/editusers")
+def edit_users():
+    return render_template("editusers.html")
+
+
+@app.get("/edituser")
+def edit_user():
+    return render_template("edituser.html")
+
+
+@app.post("/adduser")
+def add_user():
+    req = request.get_json()
+    current_user = session.get("user")
+    if not current_user:
+        return jsonify({"error": "User not logged in"}), 400
+    try:
+        conn: Connection[TupleRow] = get_conn()
+        cur: Cursor[TupleRow] = conn.cursor()
+        query: str = "UPDATE users SET u_householdid = %s WHERE u_username = %s AND u_isadmin = FALSE"
+        cur.execute(
+            query,
+            (
+                current_user["householdid"],
+                req.get("userName"),
+            ),
+        )
+        conn.commit()
+        if cur.rowcount == 0:
+            return jsonify({"error": "User not found or user is admin"}), 400
+        cur.close()
+        conn.close()
+        return jsonify({"success": "User added"}), 200
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500

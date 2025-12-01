@@ -91,6 +91,28 @@ function closeAddItem() {
     document.getElementById("categorySelect").value = "";
 }
 
+function openDeleteList() {
+    document.getElementById("deleteList").style.display = "block";
+}
+
+function closeDeleteList() {
+    document.getElementById("deleteList").style.display = "none";
+}
+
+async function deleteList() {
+    const response = await fetch(`http://127.0.0.1:5000/deleteList/${currentListId}`, {
+        method: "DELETE",
+        credentials: 'include',
+        headers: { "Content-Type": "application/json" }
+    });
+
+    if (response.status === 200) {
+        window.location.href = "http://127.0.0.1:5000/dashboard"
+    } else {
+        alert("Failed to Delete List");
+    }
+}
+
 async function addItemToList() {
     const groceryName = document.getElementById("groceryName").value;
     let quantity = document.getElementById("quantity").value;

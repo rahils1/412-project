@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Add/Delete User</title>
+    <style>
+        body {
+            height: 90vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #15141d;
+            color: white;
+            font-family: Georgia, serif;
+        }
+
+        .newlist-container {
+            text-align: center;
+            background: rgb(88, 85, 99);
+            padding: 40px;
+        }
+
+        input[type="text"], textarea {
+            width: 220px;
+            padding: 10px;
+            border: 1px solid #9c9c9c;
+            background: rgb(120, 116, 135);
+            color: white;
+            font-family: Georgia, serif;
+            font-size: 16px;
+        }
+
+        textarea {
+            height: 80px;
+            resize: none;
+        }
+
+        button {
+            padding: 8px 25px;
+            border: none;
+            background-color: #312f40;
+            color: white;
+            cursor: pointer;
+            font-family: Georgia, serif;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #7777a0;
+            transform: translateY(-1px);
+        }
+
+        .toggle-container {
+            width: 240px;
+            height: 40px;
+            background-color: #4a4958;
+            border: 1px solid #9c9c9c;
+            position: relative;
+            cursor: pointer;
+            transition: background-color 0.25s ease;
+        }
+
+        .toggle-slider {
+            width: 50%;
+            height: 100%;
+            background-color: rgb(120, 116, 135);
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: left 0.25s ease;
+        }
+
+        .toggle-container.active {
+           background-color: #4a4958;
+        }
+
+        .toggle-container.active .toggle-slider {
+            left: 50%;
+        }
+
+        .toggle-label-left,
+        .toggle-label-right {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 16px;
+            width: 50%;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .toggle-label-left {
+            left: 0;
+        }
+
+        .toggle-label-right {
+            right: 0;
+        }
+    </style>
+
+    <script src="../static/js/edituser.js"></script>
+</head>
+<body>
+
+<div class="newlist-container">
+    <h2>Add/Delete User</h2>
+    <input type="text" placeholder="User Name"><br><br>
+
+    <div style="display: flex; justify-content: center; gap: 15px; margin-top: 20px;">
+        <button type="button" onclick="addUser()">Add</button>
+        <button id = "cancelBtn"
+                onclick="location.href='/dashboard'">
+            Cancel
+        </button>
+    </div>
+
+</div>
+
+</body>
+</html>
